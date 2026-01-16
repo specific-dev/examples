@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Click Counter</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: system-ui, sans-serif;
+        background: #111;
+        color: #fff;
+      }
+      .counter {
+        text-align: center;
+      }
+      .count {
+        font-size: 8rem;
+        font-weight: bold;
+        margin-bottom: 2rem;
+        opacity: 0;
+        transition: opacity 0.2s;
+      }
+      .count.loaded {
+        opacity: 1;
+      }
+      button {
+        font-size: 1.5rem;
+        padding: 1rem 3rem;
+        border: none;
+        border-radius: 8px;
+        background: #3b82f6;
+        color: #fff;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      button:hover {
+        background: #2563eb;
+      }
+      button:active {
+        transform: scale(0.98);
+      }
+      .hint {
+        margin-top: 2rem;
+        color: #666;
+        font-size: 0.9rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="counter">
+      <div class="count" id="count">0</div>
+      <button id="clickBtn">Click me!</button>
+      <p class="hint">Open this page in one more tab to see real-time sync</p>
+    </div>
+
+    <script type="module">
+      import { ShapeStream, Shape } from "https://esm.run/@electric-sql/client@1.4.1";
+
+      const countEl = document.getElementById("count");
+      const clickBtn = document.getElementById("clickBtn");
+
+      // Subscribe to real-time updates via Electric
+      const stream = new ShapeStream({ url: `${window.location.origin}/api/sync/clicks` });
+      const shape = new Shape(stream);
+
+      shape.subscribe((data) => {
+        const rows = Array.isArray(data) ? data : data.rows || [];
+        if (rows.length > 0) {
+          countEl.textContent = rows[0].count;
+          countEl.classList.add("loaded");
+        }
+      });
+
+      // Handle click
+      clickBtn.addEventListener("click", () => {
+        fetch("/api/click", { method: "POST" });
+      });
+    </script>
+  </body>
+</html>

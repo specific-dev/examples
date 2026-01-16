@@ -1,0 +1,22 @@
+{
+  "name": "realtime-click-counter",
+  "version": "1.0.0",
+  "description": "Minimal click counter with real-time sync using Specific",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate"
+  },
+  "dependencies": {
+    "@electric-sql/client": "^1.4.1",
+    "@fastify/static": "^9.0.0",
+    "drizzle-orm": "^0.45.1",
+    "fastify": "^5.7.1",
+    "pg": "^8.17.1"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.31.8"
+  }
+}
