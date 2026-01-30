@@ -6,7 +6,9 @@ build "app" {
 service "web" {
   build   = build.app
   command = "npm start"
-  expose {}
+  endpoint {
+    public = true
+  }
 
   env = {
     PORT                 = port
