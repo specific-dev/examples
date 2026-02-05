@@ -52,7 +52,7 @@ Displays a simple web interface showing:
 - A "Schedule New Task" button
 - A table of all tasks with their IDs, statuses, and start times
 
-Status colors indicate workflow state (running, completed, failed, etc.).
+Status colors indicate workflow state (running, completed, failed, etc).
 
 ### POST /schedule
 
