@@ -1,6 +1,6 @@
 # Secrets Example
 
-A simple example demonstrating how to use secrets and configs in Specific.
+A simple example demonstrating how to use secrets and configs in Specific
 
 ## Definitions
 
