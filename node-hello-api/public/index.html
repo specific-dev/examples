@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hello API</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: system-ui, sans-serif;
+        background: #111;
+        color: #fff;
+      }
+      .container {
+        text-align: center;
+      }
+      .message {
+        font-size: 3rem;
+        font-weight: bold;
+        margin-bottom: 2rem;
+        opacity: 0;
+        transition: opacity 0.2s;
+      }
+      .message.loaded {
+        opacity: 1;
+      }
+      .hint {
+        margin-top: 2rem;
+        color: #666;
+        font-size: 0.9rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="message" id="message">Loading...</div>
+      <p class="hint">Message fetched from /api/hello</p>
+    </div>
+
+    <script>
+      const messageEl = document.getElementById("message");
+
+      async function loadMessage() {
+        const res = await fetch("/api/hello");
+        const data = await res.json();
+        messageEl.textContent = data.message;
+        messageEl.classList.add("loaded");
+      }
+
+      loadMessage();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,10 @@
+# Local secrets and configuration
+# Do not commit this file
+
+secrets {
+  my_secret = "super-secret"
+}
+
+config {
+  my_config = "super-public-config"
+}

@@ -1,0 +1,9 @@
+{
+  "name": "inter-service-demo",
+  "version": "1.0.0",
+  "description": "Demo showing inter-service communication with Specific",
+  "type": "module",
+  "scripts": {
+    "start": "echo 'Use specific dev to run this project'"
+  }
+}

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Secrets API</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: system-ui, sans-serif;
+        background: #111;
+        color: #fff;
+      }
+      .container {
+        text-align: center;
+      }
+      .secrets {
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+        opacity: 0;
+        transition: opacity 0.2s;
+      }
+      .secrets.loaded {
+        opacity: 1;
+      }
+      .secret-item {
+        margin: 1rem 0;
+      }
+      .label {
+        color: #888;
+        font-size: 0.9rem;
+        margin-bottom: 0.25rem;
+      }
+      .value {
+        font-weight: bold;
+        font-size: 2rem;
+      }
+      .hint {
+        margin-top: 2rem;
+        color: #666;
+        font-size: 0.9rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="secrets" id="secrets">Loading...</div>
+      <p class="hint">Data fetched from /api/secrets</p>
+    </div>
+
+    <script>
+      const secretsEl = document.getElementById("secrets");
+
+      async function loadSecrets() {
+        const res = await fetch("/api/secrets");
+        const data = await res.json();
+        secretsEl.innerHTML = `
+          <div class="secret-item">
+            <div class="label">MY_SECRET</div>
+            <div class="value">${data.my_secret}</div>
+          </div>
+          <div class="secret-item">
+            <div class="label">MY_CONFIG</div>
+            <div class="value">${data.my_config}</div>
+          </div>
+        `;
+        secretsEl.classList.add("loaded");
+      }
+
+      loadSecrets();
+    </script>
+  </body>
+</html>

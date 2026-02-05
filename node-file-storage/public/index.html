@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>File Storage</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            body {
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-family: system-ui, sans-serif;
+                background: #111;
+                color: #fff;
+            }
+            .container {
+                text-align: center;
+                width: 100%;
+                max-width: 700px;
+                padding: 20px;
+            }
+            h1 {
+                font-size: 2.5rem;
+                font-weight: bold;
+                margin-bottom: 0.5rem;
+            }
+            .subtitle {
+                color: #666;
+                margin-bottom: 2rem;
+            }
+            .upload-form {
+                margin-bottom: 2rem;
+            }
+            .upload-form form {
+                display: flex;
+                gap: 12px;
+                justify-content: center;
+                align-items: center;
+                flex-wrap: wrap;
+            }
+            input[type="file"] {
+                background: #1a1a1a;
+                border: 1px solid #333;
+                border-radius: 8px;
+                padding: 12px;
+                color: #fff;
+                font-size: 14px;
+            }
+            input[type="file"]::file-selector-button {
+                background: #333;
+                border: none;
+                border-radius: 4px;
+                padding: 8px 16px;
+                color: #fff;
+                cursor: pointer;
+                margin-right: 12px;
+            }
+            button {
+                font-size: 1rem;
+                padding: 12px 24px;
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+                transition: background 0.2s;
+            }
+            button:active {
+                transform: scale(0.98);
+            }
+            .btn-primary {
+                background: #3b82f6;
+                color: #fff;
+            }
+            .btn-primary:hover {
+                background: #2563eb;
+            }
+            .btn-danger {
+                background: #ef4444;
+                color: #fff;
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+            .btn-danger:hover {
+                background: #dc2626;
+            }
+            .hint {
+                color: #666;
+                font-size: 13px;
+                margin-top: 12px;
+            }
+            .error {
+                color: #ef4444;
+                font-size: 14px;
+                margin-top: 10px;
+                display: none;
+            }
+            .table-container {
+                background: #1a1a1a;
+                border-radius: 8px;
+                overflow: hidden;
+                margin-top: 2rem;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            th {
+                padding: 12px;
+                text-align: left;
+                font-weight: 600;
+                color: #888;
+                border-bottom: 1px solid #333;
+                background: #222;
+            }
+            td {
+                padding: 12px;
+                border-bottom: 1px solid #333;
+            }
+            .file-name {
+                font-family: monospace;
+                font-size: 14px;
+            }
+            .file-size {
+                color: #888;
+                font-size: 14px;
+            }
+            .actions {
+                display: flex;
+                gap: 8px;
+                justify-content: flex-end;
+            }
+            a {
+                color: #3b82f6;
+                text-decoration: none;
+                padding: 8px 16px;
+                border-radius: 4px;
+                font-size: 14px;
+                transition: background 0.2s;
+            }
+            a:hover {
+                background: #333;
+            }
+            .empty-state {
+                padding: 24px;
+                text-align: center;
+                color: #666;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>File Storage</h1>
+            <p class="subtitle">Upload and manage your text files</p>
+
+            <div class="upload-form">
+                <form id="uploadForm" enctype="multipart/form-data">
+                    <input type="file" name="file" accept=".txt" required />
+                    <button type="submit" class="btn-primary">Upload</button>
+                </form>
+                <p class="hint">Only .txt files allowed</p>
+                <p class="error" id="uploadError"></p>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>File</th>
+                            <th>Size</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="fileList">
+                        <tr>
+                            <td colspan="3" class="empty-state">Loading...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <script>
+            async function loadFiles() {
+                const res = await fetch("/files");
+                const files = await res.json();
+                const tbody = document.getElementById("fileList");
+
+                if (files.length === 0) {
+                    tbody.innerHTML =
+                        '<tr><td colspan="3" class="empty-state">No files yet. Upload one above!</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = files
+                    .map(
+                        (f) => `
+                        <tr>
+                            <td class="file-name">${f.key}</td>
+                            <td class="file-size">${formatSize(f.size)}</td>
+                            <td>
+                                <div class="actions">
+                                    <a href="/files/${encodeURIComponent(f.key)}" download>Download</a>
+                                    <button class="btn-danger" onclick="deleteFile('${f.key}')">Delete</button>
+                                </div>
+                            </td>
+                        </tr>
+                        `,
+                    )
+                    .join("");
+            }
+
+            function formatSize(bytes) {
+                if (bytes < 1024) return bytes + " B";
+                if (bytes < 1024 * 1024)
+                    return (bytes / 1024).toFixed(1) + " KB";
+                return (bytes / (1024 * 1024)).toFixed(1) + " MB";
+            }
+
+            async function deleteFile(key) {
+                if (!confirm("Delete " + key + "?")) return;
+                await fetch("/files/" + encodeURIComponent(key), {
+                    method: "DELETE",
+                });
+                loadFiles();
+            }
+
+            document.getElementById("uploadForm").onsubmit = async (e) => {
+                e.preventDefault();
+                const errorEl = document.getElementById("uploadError");
+                errorEl.style.display = "none";
+
+                const formData = new FormData(e.target);
+                const res = await fetch("/upload", {
+                    method: "POST",
+                    body: formData,
+                });
+                const data = await res.json();
+
+                if (!res.ok) {
+                    errorEl.textContent = data.error || "Upload failed";
+                    errorEl.style.display = "block";
+                    return;
+                }
+
+                e.target.reset();
+                loadFiles();
+            };
+
+            loadFiles();
+        </script>
+    </body>
+</html>

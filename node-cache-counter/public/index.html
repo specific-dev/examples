@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cache Counter</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: system-ui, sans-serif;
+        background: #111;
+        color: #fff;
+      }
+      .counter {
+        text-align: center;
+      }
+      .count {
+        font-size: 8rem;
+        font-weight: bold;
+        margin-bottom: 2rem;
+        opacity: 0;
+        transition: opacity 0.2s;
+      }
+      .count.loaded {
+        opacity: 1;
+      }
+      .hint {
+        margin-top: 2rem;
+        color: #666;
+        font-size: 0.9rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="counter">
+      <div class="count" id="count">0</div>
+      <p class="hint">Refresh to increment &mdash; counter is stored in Redis cache</p>
+    </div>
+
+    <script>
+      const countEl = document.getElementById("count");
+
+      async function loadCount() {
+        const res = await fetch("/api/count");
+        const data = await res.json();
+        countEl.textContent = data.count;
+        countEl.classList.add("loaded");
+      }
+
+      loadCount();
+    </script>
+  </body>
+</html>
