@@ -1,8 +1,8 @@
 import http from "node:http";
 
 const PORT = process.env.PORT || 3000;
-const USERS_HOST = process.env.USERS_HOST;
-const PRODUCTS_HOST = process.env.PRODUCTS_HOST;
+const USERS_URL = process.env.USERS_URL;
+const PRODUCTS_URL = process.env.PRODUCTS_URL;
 
 async function fetchJson(url) {
   return new Promise((resolve, reject) => {
@@ -20,8 +20,8 @@ const server = http.createServer(async (req, res) => {
     try {
       // Fetch data from both internal services in parallel
       const [users, products] = await Promise.all([
-        fetchJson(`http://${USERS_HOST}/users`),
-        fetchJson(`http://${PRODUCTS_HOST}/products`),
+        fetchJson(USERS_URL),
+        fetchJson(PRODUCTS_URL),
       ]);
 
       const response = {
@@ -46,6 +46,6 @@ const server = http.createServer(async (req, res) => {
 
 server.listen(PORT, () => {
   console.log(`Gateway listening on port ${PORT}`);
-  console.log(`  USERS_HOST: ${USERS_HOST}`);
-  console.log(`  PRODUCTS_HOST: ${PRODUCTS_HOST}`);
+  console.log(`  USERS_URL: ${USERS_URL}`);
+  console.log(`  PRODUCTS_URL: ${PRODUCTS_URL}`);
 });

@@ -16,9 +16,9 @@ service "gateway" {
   }
 
   env = {
-    PORT = port
-    USERS_HOST = service.users.url
-    PRODUCTS_HOST = service.products.url
+    PORT         = port
+    USERS_URL    = "http://${service.users.private_url}/users"
+    PRODUCTS_URL = "http://${service.products.private_url}/products"
   }
 
   dev {
