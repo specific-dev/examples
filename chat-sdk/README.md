@@ -19,8 +19,9 @@ A Slack bot built with [Chat SDK](https://www.npmjs.com/package/chat) and deploy
 
 2. Create a Slack app with Event Subscriptions and Interactivity pointing at `<your-url>/webhooks/slack`. Required bot events: `app_mention`, `message.channels`, `message.im`.
 
-3. Run locally (secrets are prompted on first run):
+3. Build and run locally (secrets are prompted on first run):
    ```
+   npm run build
    specific dev
    ```
 
