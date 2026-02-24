@@ -11,8 +11,9 @@ A Slack bot built with [Chat SDK](https://www.npmjs.com/package/chat) and deploy
 
 ## Setup
 
-1. Install dependencies:
+1. Install Specific CLI and dependencies:
    ```
+   npm i -g @specific.dev/cli
    npm install
    ```
 
