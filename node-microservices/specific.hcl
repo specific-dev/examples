@@ -35,11 +35,11 @@ service "users" {
 
   env = {
     PORT = port
+    DATABASE_URL = postgres.users_db.url
   }
 
   dev {
     command = "node users/index.js"
-    DATABASE_URL = postgres.db.url
   }
 }
 
@@ -52,7 +52,7 @@ service "products" {
 
   env = {
     PORT = port
-    DATABASE_URL = postgres.db.url
+    DATABASE_URL = postgres.products_db.url
   }
 
   dev {
@@ -60,4 +60,5 @@ service "products" {
   }
 }
 
-postgres "db" {}
+postgres "products_db" {}
+postgres "users_db" {}
