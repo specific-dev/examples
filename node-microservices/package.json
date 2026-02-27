@@ -5,5 +5,8 @@
   "type": "module",
   "scripts": {
     "start": "echo 'Use specific dev to run this project'"
+  },
+  "dependencies": {
+    "pg": "^8.19.0"
   }
 }

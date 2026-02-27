@@ -16,9 +16,9 @@ service "gateway" {
   }
 
   env = {
-    PORT = port
-    USERS_HOST = service.users.url
-    PRODUCTS_HOST = service.products.url
+    PORT         = port
+    USERS_URL    = "http://${service.users.private_url}/users"
+    PRODUCTS_URL = "http://${service.products.private_url}/products"
   }
 
   dev {
@@ -35,11 +35,11 @@ service "users" {
 
   env = {
     PORT = port
+    DATABASE_URL = postgres.users_db.url
   }
 
   dev {
     command = "node users/index.js"
-    DATABASE_URL = postgres.db.url
   }
 }
 
@@ -52,7 +52,7 @@ service "products" {
 
   env = {
     PORT = port
-    DATABASE_URL = postgres.db.url
+    DATABASE_URL = postgres.products_db.url
   }
 
   dev {
@@ -60,4 +60,5 @@ service "products" {
   }
 }
 
-postgres "db" {}
+postgres "products_db" {}
+postgres "users_db" {}
