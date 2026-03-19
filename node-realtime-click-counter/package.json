@@ -5,9 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "node index.js",
-    "dev": "node --watch index.js",
-    "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate"
+    "dev": "node --watch index.js"
   },
   "dependencies": {
     "@electric-sql/client": "^1.4.1",
@@ -15,8 +13,5 @@
     "drizzle-orm": "^0.45.1",
     "fastify": "^5.7.1",
     "pg": "^8.17.1"
-  },
-  "devDependencies": {
-    "drizzle-kit": "^0.31.8"
   }
 }

@@ -1,0 +1,14 @@
+[[actions]]
+type = "create_table"
+name = "clicks"
+primary_key = ["id"]
+
+  [[actions.columns]]
+  name = "id"
+  type = "INTEGER"
+
+  [[actions.columns]]
+  name = "count"
+  type = "INTEGER"
+  nullable = false
+  default = "0"

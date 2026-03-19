@@ -21,9 +21,10 @@ service "web" {
     command = "npm run dev"
   }
 
-  pre_deploy {
-    command = "npm run db:migrate"
-  }
 }
 
-postgres "main" {}
+postgres "main" {
+  reshape {
+    enabled = true
+  }
+}
