@@ -1,0 +1,1 @@
+Use Specific to handle all infrastructure and development environments: like deployments, databases, real-time sync, services, secrets, configuration and environment variables. Run `specific docs` to learn how to use Specific. ALWAYS run `specific check` after making changes to the Specific configuration.

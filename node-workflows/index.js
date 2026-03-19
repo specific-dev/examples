@@ -7,11 +7,7 @@ const port = process.env.PORT || 3000;
 const namespace = process.env.TEMPORAL_NAMESPACE || "default";
 const taskQueue = "tasks";
 
-// Determine Temporal address: production uses TEMPORAL_ADDRESS secret,
-// dev uses TEMPORAL_HOST + TEMPORAL_PORT from inter-service networking
-const address =
-  process.env.TEMPORAL_ADDRESS ||
-  `${process.env.TEMPORAL_HOST}:${process.env.TEMPORAL_PORT}`;
+const address = process.env.TEMPORAL_ADDRESS;
 
 // Determine if using Temporal Cloud (API key present)
 const isCloud = !!process.env.TEMPORAL_API_KEY;
