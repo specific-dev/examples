@@ -9,7 +9,9 @@ import { fileURLToPath } from "url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const db = drizzle(process.env.DATABASE_URL);
-const fastify = Fastify({ logger: true });
+const fastify = Fastify({
+  logger: { transport: { target: "pino-pretty" } },
+});
 
 // Electric protocol params that must be forwarded from client
 const ELECTRIC_PARAMS = ["offset", "handle", "live", "cursor"];
@@ -20,7 +22,7 @@ fastify.register(fastifyStatic, {
 });
 
 // Proxy endpoint for Electric sync - defines shape server-side
-fastify.get("/api/sync/clicks", async (request, reply) => {
+fastify.get("/api/sync/clicks", { logLevel: "warn" }, async (request, reply) => {
   const originUrl = new URL("/v1/shape", process.env.DATABASE_SYNC_URL);
 
   // Server defines the shape (table) - client cannot override
