@@ -162,7 +162,7 @@
                     <input type="file" name="file" accept=".txt" required />
                     <button type="submit" class="btn-primary">Upload</button>
                 </form>
-                <p class="hint">Only .txt files allowed</p>
+                <p class="hint">Only .txt files allowed. Your collection is available in this browser for 24 hours.</p>
                 <p class="error" id="uploadError"></p>
             </div>
 
@@ -196,22 +196,28 @@
                     return;
                 }
 
-                tbody.innerHTML = files
-                    .map(
-                        (f) => `
-                        <tr>
-                            <td class="file-name">${f.key}</td>
-                            <td class="file-size">${formatSize(f.size)}</td>
-                            <td>
-                                <div class="actions">
-                                    <a href="/files/${encodeURIComponent(f.key)}" download>Download</a>
-                                    <button class="btn-danger" onclick="deleteFile('${f.key}')">Delete</button>
-                                </div>
-                            </td>
-                        </tr>
-                        `,
-                    )
-                    .join("");
+                tbody.replaceChildren();
+                for (const file of files) {
+                    const row = tbody.insertRow();
+                    const name = row.insertCell();
+                    name.className = "file-name";
+                    name.textContent = file.key;
+                    const size = row.insertCell();
+                    size.className = "file-size";
+                    size.textContent = formatSize(file.size);
+                    const actions = document.createElement("div");
+                    actions.className = "actions";
+                    row.insertCell().append(actions);
+                    const download = document.createElement("a");
+                    download.href = "/files/" + encodeURIComponent(file.key);
+                    download.download = file.key;
+                    download.textContent = "Download";
+                    const remove = document.createElement("button");
+                    remove.className = "btn-danger";
+                    remove.textContent = "Delete";
+                    remove.addEventListener("click", () => deleteFile(file.key));
+                    actions.append(download, remove);
+                }
             }
 
             function formatSize(bytes) {

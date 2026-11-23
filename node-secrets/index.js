@@ -13,7 +13,7 @@ const server = createServer(async (req, res) => {
     res.writeHead(200, { "Content-Type": "application/json" });
     res.end(
       JSON.stringify({
-        my_secret: mySecret || "(not set)",
+        my_secret_configured: Boolean(mySecret),
         my_config: myConfig || "(not set)",
       })
     );

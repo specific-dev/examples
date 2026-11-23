@@ -5,9 +5,9 @@ A simple file upload and download application using object storage (Tigris/S3-co
 ## Features
 
 - Upload files via web interface
-- List all uploaded files
+- List files in a private collection identified by a 24-hour browser cookie
 - Download files
-- Delete files
+- Delete files in your collection. A daily cron removes visitor uploads older than 24 hours.
 
 ## Configuration
 

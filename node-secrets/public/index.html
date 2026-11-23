@@ -52,7 +52,10 @@
   </head>
   <body>
     <div class="container">
-      <div class="secrets" id="secrets">Loading...</div>
+      <div class="secrets" id="secrets">
+        <div class="secret-item"><div class="label">MY_SECRET</div><div class="value" id="secret-status">Loading...</div></div>
+        <div class="secret-item"><div class="label">MY_CONFIG</div><div class="value" id="config-value">Loading...</div></div>
+      </div>
       <p class="hint">Data fetched from /api/secrets</p>
     </div>
 
@@ -62,16 +65,8 @@
       async function loadSecrets() {
         const res = await fetch("/api/secrets");
         const data = await res.json();
-        secretsEl.innerHTML = `
-          <div class="secret-item">
-            <div class="label">MY_SECRET</div>
-            <div class="value">${data.my_secret}</div>
-          </div>
-          <div class="secret-item">
-            <div class="label">MY_CONFIG</div>
-            <div class="value">${data.my_config}</div>
-          </div>
-        `;
+        document.getElementById("secret-status").textContent = data.my_secret_configured ? "Configured" : "Not set";
+        document.getElementById("config-value").textContent = data.my_config;
         secretsEl.classList.add("loaded");
       }
 
