@@ -25,7 +25,7 @@ This example defines:
 3. The server will respond with:
    ```json
    {
-     "my_secret": "super-secret-value",
+     "my_secret_configured": true,
      "my_config": "my-config-value"
    }
    ```

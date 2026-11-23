@@ -24,3 +24,17 @@ service "app" {
     command = "node --watch index.js"
   }
 }
+
+cron "expire-uploads" {
+  build    = build.app
+  command  = "node index.js --expire-uploads"
+  schedule = "@daily"
+
+  env = {
+    PORT          = port
+    S3_ENDPOINT   = storage.files.endpoint
+    S3_ACCESS_KEY = storage.files.access_key
+    S3_SECRET_KEY = storage.files.secret_key
+    S3_BUCKET     = storage.files.bucket
+  }
+}
